@@ -11,7 +11,11 @@ locationBtn.addEventListener('click',function(){
                 return getCountryData(data.countryCode);
             })
             .then(data=>{
-                console.log(data);
+                renderCountry(data);
+                return getCountryData(data.borders[0])
+            })
+            .then(data=>{
+                renderCountry(data, 'neighbor');
             })
             .catch(error=>{
                 console.log(error);
@@ -42,6 +46,23 @@ const getCountryData=function(country){
         })
 }
 
-const renderCountry=function(data){
+const renderCountry=function(data, className=''){
+    console.log(data);
+    let html=`
+    <div class="country ${className}">
+        <img class="flag" src="${data.flag}">
+
+        </img>
+        <div class="country-info">
+            <div>
+                <h2>${data.name}</h2>
+                <h3>${data.region}</h3>
+            <div>
+            <p>🧍‍♀️ ${(data.population/1000000).toFixed(2)} million people</p>
+            <p>🗣 ${data.languages[0].name}</p>
+            <p>💰 ${data.currencies[0].name}</p>
+        </div>
+    </div>`
+    countryContainer.insertAdjacentHTML('beforeend',html);
 
 }
