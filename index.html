@@ -15,22 +15,23 @@
             <h2>Click the button below to get information on your current country and a neighboring country</h2>
         </div>
         <div class="countries-container" id="countries-container">
-            <!--<div class="country">
+            <!--<div class="country ${className}">
                 <img class="flag" src="${data.flag}">
-        
+
                 </img>
                 <div class="country-info">
                     <div>
                         <h2>${data.name}</h2>
                         <h3>${data.region}</h3>
                     <div>
-                    <p>🧍‍♀️ ${data.population.toFixed(2)/1000000} million people</p>
-                    <p>🗣 ${data.languages[0].name}</p>
-                    <p>💰 ${data.currencies[0].name}</p>
+                    <p><ion-icon class="icon" name="people"></ion-icon> ${(data.population/1000000).toFixed(2)} million people</p>
+                    <p><ion-icon class="icon" name="mic"></ion-icon> ${data.languages[0].name}</p>
+                    <p><ion-icon class="icon" name="cash"></ion-icon> ${data.currencies[0].name}</p>
                 </div>
             </div>-->
         </div>
         <input class="location-btn" type="button" id="location-btn" value="Where Am I?">
     </div>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 </body>
 </html>

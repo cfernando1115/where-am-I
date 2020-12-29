@@ -6,6 +6,7 @@ body{
     margin:0;
     padding:0;
     font-family: 'Raleway', sans-serif;
+    background-color: aliceblue;
 }
 
 .container{
@@ -26,19 +27,25 @@ body{
 }
 
 .countries-container{
+    opacity:0;
     display:flex;
     margin-bottom:10px;
+    transition-duration: 1s;
 }
 
 .country{
-    border:2px solid rgb(206, 200, 200);
     display:flex;
     flex-direction:column;
     margin:10px;
-    box-shadow:3px 3px 2px 2px rgb(233, 225, 225);
+    box-shadow:4px 4px 5px 3px rgb(233, 225, 225);
     border-radius:6px;
     width:300px;
     overflow:hidden;
+    background-color: white;
+}
+
+.icon{
+    font-size: 140%;
 }
 
 .country-info{
@@ -69,15 +76,15 @@ body{
 .location-btn{
     font-size:120%;
     font-weight:600;
-    background-color:rgb(243, 243, 138);
+    background-color:rgb(247, 247, 186);
     padding:10px 8px;
     box-shadow:3px 3px 2px 2px rgb(233, 225, 225);
     border-radius:6px;
-    border:2px solid rgb(206, 200, 200);
+    border:none;
     transition-duration:.4s;
 }
 
 .location-btn:hover,
 .location-btn:active{
-    background-color: rgb(231, 231, 60);
+    background-color: rgb(243, 243, 138);
 }

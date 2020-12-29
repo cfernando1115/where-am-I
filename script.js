@@ -7,6 +7,7 @@ locationBtn.addEventListener('click',function(){
 
         //Get country using lat long (geolocation api)
         locateCountry(lat, long)
+            //Get data on country and neighbor, render html
             .then(data=>{
                 return getCountryData(data.countryCode);
             })
@@ -18,7 +19,12 @@ locationBtn.addEventListener('click',function(){
                 renderCountry(data, 'neighbor');
             })
             .catch(error=>{
-                console.log(error);
+                renderError(error.message);
+                console.error(error);
+            })
+            //Set opacity of country container
+            .finally(x=>{
+                countryContainer.style.opacity=1;
             })
         //Hide button
         locationBtn.style.opacity=0;
@@ -37,6 +43,7 @@ const locateCountry=function(lat, long){
 }
 
 const getCountryData=function(country){
+    //Get country data
     return fetch(`https://restcountries.eu/rest/v2/alpha/${country}`)
         .then(response=>{
             if(!response.ok){
@@ -47,7 +54,7 @@ const getCountryData=function(country){
 }
 
 const renderCountry=function(data, className=''){
-    console.log(data);
+    //Render and insert the country
     let html=`
     <div class="country ${className}">
         <img class="flag" src="${data.flag}">
@@ -58,11 +65,17 @@ const renderCountry=function(data, className=''){
                 <h2>${data.name}</h2>
                 <h3>${data.region}</h3>
             <div>
-            <p>🧍‍♀️ ${(data.population/1000000).toFixed(2)} million people</p>
-            <p>🗣 ${data.languages[0].name}</p>
-            <p>💰 ${data.currencies[0].name}</p>
+            <p><ion-icon class="icon" name="people"></ion-icon> ${(data.population/1000000).toFixed(2)} million people</p>
+            <p><ion-icon class="icon" name="mic"></ion-icon> ${data.languages[0].name}</p>
+            <p><ion-icon class="icon" name="cash"></ion-icon> ${data.currencies[0].name}</p>
         </div>
     </div>`
     countryContainer.insertAdjacentHTML('beforeend',html);
 
+}
+
+const renderError=function(error){
+    //Error html
+    let html=`<h2 style="color:red;"><ion-icon name="alert"></ion-icon> ${error}</h2>`;
+    countryContainer.insertAdjacentHTML('beforeend', html);
 }
