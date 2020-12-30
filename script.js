@@ -1,35 +1,41 @@
 const locationBtn=document.getElementById('location-btn');
 const countryContainer=document.getElementById('countries-container');
 
-locationBtn.addEventListener('click',function(){
-    navigator.geolocation.getCurrentPosition((pos)=>{
-        const [lat,long]=[pos.coords.latitude, pos.coords.longitude];
-
+const whereAmI=function(){
+    getPosition()
+    .then(position=>{
+        const [lat,long]=[position.coords.latitude, position.coords.longitude];
         //Get country using lat long (geolocation api)
-        locateCountry(lat, long)
-            //Get data on country and neighbor, render html
-            .then(data=>{
-                return getCountryData(data.countryCode);
-            })
-            .then(data=>{
-                renderCountry(data);
-                return getCountryData(data.borders[0])
-            })
-            .then(data=>{
-                renderCountry(data, 'neighbor');
-            })
-            .catch(error=>{
-                renderError(error.message);
-                console.error(error);
-            })
-            //Set opacity of country container
-            .finally(x=>{
-                countryContainer.style.opacity=1;
-            })
+        return locateCountry(lat, long)
+    })
+    //Get data on country and neighbor, render html
+    .then(data=>{
+        return getCountryData(data.countryCode);
+    })
+    .then(data=>{
+        renderCountry(data);
+        return getCountryData(data.borders[0])
+    })
+    .then(data=>{
+        renderCountry(data, 'neighbor');
+    })
+    .catch(error=>{
+        renderError(error.message);
+        console.error(error);
+    })
+    .finally(x=>{
+        //Set opacity of country container
+        countryContainer.style.opacity=1;
         //Hide button
         locationBtn.style.opacity=0;
-    });
-})
+    })
+}
+
+const getPosition=function(){
+    return new Promise(function(resolve, reject){
+        navigator.geolocation.getCurrentPosition(resolve,reject)
+    })
+}
 
 const locateCountry=function(lat, long){
     //Get country using lat long
@@ -79,3 +85,6 @@ const renderError=function(error){
     let html=`<h2 style="color:red;"><ion-icon name="alert"></ion-icon> ${error}</h2>`;
     countryContainer.insertAdjacentHTML('beforeend', html);
 }
+
+locationBtn.addEventListener('click',whereAmI);
+
