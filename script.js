@@ -1,13 +1,39 @@
 const locationBtn=document.getElementById('location-btn');
 const countryContainer=document.getElementById('countries-container');
+const inputContainer=document.getElementById('input-container');
+const countryLocator=document.getElementById('location');
+const findBtn=document.getElementById('find-btn');
+const form=document.getElementById('latlong-input');
+let latInput;
+let longInput;
+
+
+findBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    whereAmI();
+})
+
+locationBtn.addEventListener('click',function(){
+    whereAmI();
+});
+
+const getlatLong=function(){
+    latInput=document.getElementById('lat').value;
+    longInput=document.getElementById('long').value;
+    if(countryLocator.style.opacity==0){
+        return getPosition()
+            .then(position=>{
+                const lat=position.coords.latitude
+                const long= position.coords.longitude;
+                //Get country using lat long (geolocation api)
+                return locateCountry(lat, long)
+            })
+    }
+    return locateCountry(latInput, longInput);
+}
 
 const whereAmI=function(){
-    getPosition()
-    .then(position=>{
-        const [lat,long]=[position.coords.latitude, position.coords.longitude];
-        //Get country using lat long (geolocation api)
-        return locateCountry(lat, long)
-    })
+    getlatLong()
     //Get data on country and neighbor, render html
     .then(data=>{
         return getCountryData(data.countryCode);
@@ -24,14 +50,23 @@ const whereAmI=function(){
         console.error(error);
     })
     .finally(x=>{
-        //Set opacity of country container
+        //Set opacity of country and geolocation container
         countryContainer.style.opacity=1;
-        //Hide button
+        if(countryLocator.style.opacity==0){
+            inputContainer.style.opacity=1;
+        }
+        //Hide where am i button
         locationBtn.style.opacity=0;
+        //Display lat/long search heading and form
+        countryLocator.style.opacity=1;
+        //Clear form
+        document.getElementById('lat').value='';
+        document.getElementById('long').value='';
     })
 }
 
 const getPosition=function(){
+    //returns current location data
     return new Promise(function(resolve, reject){
         navigator.geolocation.getCurrentPosition(resolve,reject)
     })
@@ -76,15 +111,27 @@ const renderCountry=function(data, className=''){
             <p><ion-icon class="icon" name="cash"></ion-icon> ${data.currencies[0].name}</p>
         </div>
     </div>`
-    countryContainer.insertAdjacentHTML('beforeend',html);
-
+    //Determine container to render country
+    if(countryLocator.style.opacity==0){
+        countryContainer.insertAdjacentHTML('beforeend',html);
+    }
+    else{
+        inputContainer.insertAdjacentHTML('beforeend',html);
+    }
 }
 
 const renderError=function(error){
+
     //Error html
     let html=`<h2 style="color:red;"><ion-icon name="alert"></ion-icon> ${error}</h2>`;
-    countryContainer.insertAdjacentHTML('beforeend', html);
+    //Determine container to render error
+    if(countryLocator.style.opacity==1){
+        inputContainer.insertAdjacentHTML('beforeend', html);
+    }
+    else{
+        countryContainer.insertAdjacentHTML('beforeend', html);
+    }
 }
 
-locationBtn.addEventListener('click',whereAmI);
+
 

@@ -14,7 +14,7 @@ body{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-width:90%;
+    width:90%;
     margin-left:5%;
     margin-top:5%;
 }
@@ -81,10 +81,38 @@ body{
     box-shadow:3px 3px 2px 2px rgb(233, 225, 225);
     border-radius:6px;
     border:none;
-    transition-duration:.2s;
+    transition-duration:.5s;
 }
 
 .location-btn:hover,
 .location-btn:active{
     background-color: rgb(243, 243, 138);
 }
+
+.location{
+    margin:0;
+    opacity:0;
+    transition-duration:.5s;
+    /*display:flex;*/
+}
+
+.latlong-input input{
+    margin-left:5px;
+    margin-right:20px;
+}
+
+.latlong-input input:last-child{
+    margin-left:5px;
+    margin-right:0;
+}
+
+.find-btn{
+    font-size:120%;
+    font-weight:600;
+    background-color:rgb(196, 238, 199);
+    padding:10px 8px;
+    box-shadow:3px 3px 2px 2px rgb(225, 233, 227);
+    border-radius:6px;
+    border:none;
+}
+
