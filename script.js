@@ -20,6 +20,7 @@ locationBtn.addEventListener('click',function(){
 const getlatLong=function(){
     latInput=document.getElementById('lat').value;
     longInput=document.getElementById('long').value;
+    //If the lat/long container opacity has not been triggered, yet, user is searching by their current location
     if(countryLocator.style.opacity==0){
         return getPosition()
             .then(position=>{
@@ -29,6 +30,7 @@ const getlatLong=function(){
                 return locateCountry(lat, long)
             })
     }
+    //User is searching by lat/long input
     return locateCountry(latInput, longInput);
 }
 
@@ -72,8 +74,8 @@ const getPosition=function(){
     })
 }
 
-const locateCountry=function(lat, long){
-    //Get country using lat long
+const locateCountry= function(lat, long){
+    //Get country using reverse geocoding
     return fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${long}&localityLanguage=en`)
         .then(response=>{
             if(!response.ok){
